@@ -3,7 +3,6 @@ package com.belajar.tdd.service;
 import com.belajar.tdd.entity.CheckoutEntity;
 import com.belajar.tdd.repository.CheckoutRepository;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,7 @@ class CheckoutServiceTests {
     CheckoutRepository checkoutRepository;
 
     @Test
-    void saveDataCheckoutDiskon5() {
+    void saveDataCheckoutDiskonLebaran() {
         //  Data Input
         CheckoutEntity checkoutEntity = new CheckoutEntity();
         checkoutEntity.setId(1);
@@ -28,23 +27,53 @@ class CheckoutServiceTests {
         checkoutEntity.setPromoCode("lebaran");
 
         //Data Expected
-        CheckoutEntity checkoutEntityExcepted = new CheckoutEntity();
-        checkoutEntityExcepted.setId(1);
-        checkoutEntityExcepted.setAmount(1000);
-        checkoutEntityExcepted.setPromoCode("lebaran");
-        checkoutEntityExcepted.setTotalAmount(950);
+        CheckoutEntity checkoutEntityExpected = new CheckoutEntity();
+        checkoutEntityExpected.setId(1);
+        checkoutEntityExpected.setAmount(1000);
+        checkoutEntityExpected.setPromoCode("lebaran");
+        checkoutEntityExpected.setTotalAmount(950);
 
-        Mockito.when(checkoutRepository.save(Mockito.any(CheckoutEntity.class))).thenReturn(checkoutEntityExcepted);
+
+        //Mocking
+        Mockito.when(checkoutRepository.save(Mockito.any(CheckoutEntity.class))).thenReturn(checkoutEntityExpected);
 
         //      Testing unit checkoutProcess
         CheckoutEntity actual = checkoutService.checkoutProcess(checkoutEntity);
 
         //      Validation Process
-        Assertions.assertEquals(checkoutEntityExcepted.getId(), actual.getId());
-        Assertions.assertEquals(checkoutEntityExcepted.getAmount(), actual.getAmount());
-        Assertions.assertEquals(checkoutEntityExcepted.getPromoCode(), actual.getPromoCode());
-        Assertions.assertEquals(checkoutEntityExcepted.getDiscountAmout(), actual.getDiscountAmout());
-        Assertions.assertEquals(checkoutEntityExcepted.getTotalAmount(), actual.getTotalAmount());
+        Assertions.assertEquals(checkoutEntityExpected.getId(), actual.getId());
+        Assertions.assertEquals(checkoutEntityExpected.getAmount(), actual.getAmount());
+        Assertions.assertEquals(checkoutEntityExpected.getPromoCode(), actual.getPromoCode());
+        Assertions.assertEquals(checkoutEntityExpected.getDiscountAmout(), actual.getDiscountAmout());
+        Assertions.assertEquals(checkoutEntityExpected.getTotalAmount(), actual.getTotalAmount());
     }
 
+    @Test
+    void saveDataCheckoutDiskonTahunBaru() {
+        //  Data Input
+        CheckoutEntity checkoutEntity = new CheckoutEntity();
+        checkoutEntity.setId(1);
+        checkoutEntity.setAmount(1000);
+        checkoutEntity.setPromoCode("tahun_baru");
+
+        //Data Expected
+        CheckoutEntity checkoutEntityExpected = new CheckoutEntity();
+        checkoutEntityExpected.setId(1);
+        checkoutEntityExpected.setAmount(1000);
+        checkoutEntityExpected.setPromoCode("tahun_baru");
+        checkoutEntityExpected.setTotalAmount(980);
+
+        //Mocking
+        Mockito.when(checkoutRepository.save(Mockito.any(CheckoutEntity.class))).thenReturn(checkoutEntityExpected);
+
+        //      Testing unit checkoutProcess
+        CheckoutEntity actual = checkoutService.checkoutProcess(checkoutEntity);
+
+        //      Validation Process
+        Assertions.assertEquals(checkoutEntityExpected.getId(), actual.getId());
+        Assertions.assertEquals(checkoutEntityExpected.getAmount(), actual.getAmount());
+        Assertions.assertEquals(checkoutEntityExpected.getPromoCode(), actual.getPromoCode());
+        Assertions.assertEquals(checkoutEntityExpected.getDiscountAmout(), actual.getDiscountAmout());
+        Assertions.assertEquals(checkoutEntityExpected.getTotalAmount(), actual.getTotalAmount());
+    }
 }

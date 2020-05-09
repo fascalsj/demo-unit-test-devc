@@ -14,15 +14,21 @@ public class CheckoutService {
     public CheckoutEntity checkoutProcess(CheckoutEntity checkoutEntity){
 
            if ("lebaran".equals(checkoutEntity.getPromoCode())){
-               Integer discountAmout = ((5*checkoutEntity.getAmount())/100);
-               Integer totalAmount = checkoutEntity.getAmount() - discountAmout;
-               checkoutEntity.setDiscountAmout(discountAmout);
-               checkoutEntity.setTotalAmount(totalAmount);
+               checkoutEntity = prosesDiskon(5,checkoutEntity);
+           }
+           else if ("tahun_baru".equals(checkoutEntity.getPromoCode())){
+               checkoutEntity = prosesDiskon(5,checkoutEntity);
            }
 
         return checkoutRepository.save(checkoutEntity);
     }
 
-
+    private CheckoutEntity prosesDiskon(Integer diskon, CheckoutEntity checkoutEntity){
+        Integer discountAmout = ((diskon*checkoutEntity.getAmount())/100);
+        Integer totalAmount = checkoutEntity.getAmount() - discountAmout;
+        checkoutEntity.setDiscountAmout(discountAmout);
+        checkoutEntity.setTotalAmount(totalAmount);
+        return checkoutEntity;
+    }
 
 }
